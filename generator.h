@@ -31,7 +31,7 @@ const string names [99]= {"Wade","Dave","Seth","Ivan","Riley","Gilbert","Jorge",
 const int names_number = 99;
 
 const string  faculties[10] = {"Electronics", "Mathematics", "Psychology", "Philisophy", "Biology", "Media and design",\
-"International relationships", "Geography", "Computer science", "Cryptography"};
+"History", "Geography", "Computer science", "Cryptography"};
 const int faculties_number = 10;
 
 const string  specialties[5] = {"A", "B", "C", "D", "E"};
