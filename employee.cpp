@@ -23,6 +23,10 @@ bool Employee::operator < (const Employee &object) {
     }
 }
 
+bool Employee::operator >= (const Employee &object){
+    return !(*this < object);
+}
+
 // Read strings from CSV into objects + aggregate them into array
 Employee* get_array_from_csv(const std::string filename, int num_of_items){
     std::ifstream sorting_data_stream;
@@ -76,11 +80,11 @@ void PrintList(Employee* list, int num_of_items){
     }
     std::cout << std::endl;
 
-    std::cout << std::setw(15) << std::left << "Name" << " | ";
-    std::cout << std::setw(15) << std::left << "Surname" << " | ";
-    std::cout << std::setw(20) << std::left << "Faculty" << " | ";
-    std::cout << std::setw(15) << std::left << "Specialty" << " | ";
-    std::cout << std::setw(15) << std::left << "Score" << " | ";
+    std::cout << std::setw(15) << std::left << "NAME" << " | ";
+    std::cout << std::setw(15) << std::left << "SURNAME" << " | ";
+    std::cout << std::setw(20) << std::left << "FACULTY" << " | ";
+    std::cout << std::setw(15) << std::left << "SPECIALTY" << " | ";
+    std::cout << std::setw(15) << std::left << "SCORE" << " | ";
     std::cout << std::endl;
 
     for (int i = 0; i < num_of_items; i++) {
