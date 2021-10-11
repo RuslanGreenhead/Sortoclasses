@@ -1,7 +1,7 @@
 #include <iostream>
 #include "generator.h"
 #include "employee.cpp"
-#include <time.h>
+#include <chrono>
 
 void BubbleSort(Employee* list, int num_of_items){
     for (int i = num_of_items - 1; i >= 0; i--)
@@ -137,16 +137,18 @@ int main() {
     long double* time_intervals = new long double[6];
     //long double start, stop;
 
-    generate_csv("dataset_1.csv", 1000);
-    Employee* my_list = get_array_from_csv("dataset_1.csv", 1000);
-    PrintList(my_list, 1000);
+    generate_csv("dataset_1.csv", 100);
+    Employee* my_list = get_array_from_csv("dataset_1.csv", 100);
+    PrintList(my_list, 100);
 
-    clock_t t1 = clock();
-    BubbleSort(my_list, 1000);
-    clock_t t2 = clock();
+    auto start = std::chrono::high_resolution_clock::now();
+    BubbleSort(my_list, 100);
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+
 
     //PrintList(my_list, 100);
-    std::cout << CLOCKS_PER_SEC << std::endl;
-    printf("BubbleSort time: %.10lf\n", (t2 - t1) / CLOCKS_PER_SEC);
+
+    printf("Time measured: %.5f seconds.\n", elapsed.count() * 1e-9);
     return 0;
 }
