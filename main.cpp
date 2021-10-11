@@ -3,7 +3,9 @@
 #include "employee.cpp"
 #include <chrono>
 
-void BubbleSort(Employee* list, int num_of_items){
+double BubbleSort(Employee* list, int num_of_items){
+    auto start = std::chrono::high_resolution_clock::now();
+
     for (int i = num_of_items - 1; i >= 0; i--)
     {
         for (int j = 0; j < i; j++)
@@ -16,9 +18,15 @@ void BubbleSort(Employee* list, int num_of_items){
             }
         }
     }
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+    return elapsed.count() * 1e-9;
 }
 
-void SelectSort(Employee* list, int num_of_items){
+double SelectSort(Employee* list, int num_of_items){
+    auto start = std::chrono::high_resolution_clock::now();
+
     for (int i = 0; i < num_of_items - 1; i++)
     {
         int min_i = i;
@@ -34,9 +42,15 @@ void SelectSort(Employee* list, int num_of_items){
         list[i] = list[min_i];
         list[min_i] = temp;
     }
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+    return elapsed.count() * 1e-9;
 }
 
-void InsertSort(Employee* list, int num_of_items){
+double InsertSort(Employee* list, int num_of_items){
+    auto start = std::chrono::high_resolution_clock::now();
+
     int i, j;
     Employee value;
 
@@ -49,9 +63,15 @@ void InsertSort(Employee* list, int num_of_items){
         }
         list[j + 1] = value;
     }
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+    return elapsed.count() * 1e-9;
 }
 
-void ShakerSort(Employee* list, int num_of_items){
+double ShakerSort(Employee* list, int num_of_items){
+    auto start = std::chrono::high_resolution_clock::now();
+
     int left, right, i;
     left = 0;
     right= num_of_items - 1;
@@ -69,6 +89,10 @@ void ShakerSort(Employee* list, int num_of_items){
         }
         right--;
     }
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+    return elapsed.count() * 1e-9;
 }
 
 void DownHeap(Employee* list, long k, long n){
@@ -89,7 +113,9 @@ void DownHeap(Employee* list, long k, long n){
     list[k] = new_elem;
 }
 
-void HeapSort(Employee* list, long num_of_items){
+double HeapSort(Employee* list, long num_of_items){
+    auto start = std::chrono::high_resolution_clock::now();
+
     long i;
     Employee tmp;
 
@@ -103,6 +129,10 @@ void HeapSort(Employee* list, long num_of_items){
         list[0] = tmp;
         DownHeap(list, 0, i - 1);
     }
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+    return elapsed.count() * 1e-9;
 }
 
 void QuickSort_base(Employee* list, int first, int last){
@@ -128,27 +158,37 @@ void QuickSort_base(Employee* list, int first, int last){
     }
 }
 
-void QuickSort(Employee* list, int num_of_items){
-    QuickSort_base(list, 0, num_of_items - 1);
-}
-
-
-int main() {
-    long double* time_intervals = new long double[6];
-    //long double start, stop;
-
-    generate_csv("dataset_1.csv", 100);
-    Employee* my_list = get_array_from_csv("dataset_1.csv", 100);
-    PrintList(my_list, 100);
-
+double QuickSort(Employee* list, int num_of_items){
     auto start = std::chrono::high_resolution_clock::now();
-    BubbleSort(my_list, 100);
+
+    QuickSort_base(list, 0, num_of_items - 1);
+
     auto stop = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
+    return elapsed.count() * 1e-9;
+}
 
+Employee* CopyList(Employee* list, long n){
+    auto* res = new Employee[n];
+    for(int i = 0; i < n; i++){
+        res[i] = list[i];
+    }
+    return res;
+}
 
-    //PrintList(my_list, 100);
+int main() {
+    generate_csv("dataset_1.csv", 50000);
+    Employee* my_list = get_array_from_csv("dataset_1.csv", 50000);
 
-    printf("Time measured: %.5f seconds.\n", elapsed.count() * 1e-9);
+    for(int i = 1; i <= 10; i++){
+        printf("SelectSort time (%d): %lf seconds.\n", 5000 * i, SelectSort(CopyList(my_list, 5000 * i), 5000 * i));
+    }
+
+    std::cout << std::endl;
+
+    for(int i = 1; i <= 10; i++){
+        printf("HeapSort time (%d): %lf seconds.\n", 5000 * i, HeapSort(CopyList(my_list, 5000 * i), 5000 * i));
+    }
+
     return 0;
 }
