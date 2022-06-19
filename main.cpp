@@ -12,9 +12,9 @@ double BubbleSort(Employee* list, int num_of_items){
         {
             if (list[j] > list[j + 1])
             {
-                Employee tmp = list[j];
-                list[j] = list[j + 1];
-                list[j + 1] = tmp;
+                list[j] = list[j] ^ list[j + 1];
+                list[j + 1] = list[j] ^ list[j + 1];
+                list[j] = list[j] ^ list[j + 1];
             }
         }
     }
@@ -38,9 +38,9 @@ double SelectSort(Employee* list, int num_of_items){
             }
         }
 
-        Employee temp = list[i];
-        list[i] = list[min_i];
-        list[min_i] = temp;
+        list[i] = list[i] ^ list[min_i];
+        list[min_i] = list[i] ^ list[min_i];
+        list[i] = list[i] ^ list[min_i];
     }
 
     auto stop = std::chrono::high_resolution_clock::now();
@@ -117,16 +117,15 @@ double HeapSort(Employee* list, long num_of_items){
     auto start = std::chrono::high_resolution_clock::now();
 
     long i;
-    Employee tmp;
 
     for(i = num_of_items / 2; i >= 0; i--){
         DownHeap(list, i, num_of_items - 1);
     }
 
     for(i = num_of_items - 1; i > 0; i--){
-        tmp = list[i];
-        list[i] = list[0];
-        list[0] = tmp;
+        list[i] = list[i] ^ list[0];
+        list[0] = list[i] ^ list[0];
+        list[i] = list[i] ^ list[0];
         DownHeap(list, 0, i - 1);
     }
 
@@ -145,9 +144,9 @@ void QuickSort_base(Employee* list, int first, int last){
             while (list[right] > middle) right--;
             if (left <= right)
             {
-                Employee tmp = list[left];
-                list[left] = list[right];
-                list[right] = tmp;
+                list[left] = list[left] ^ list[right];
+                list[right] = list[left] ^ list[right];
+                list[left] = list[left] ^ list[right];
                 left++;
                 right--;
             }
